@@ -1,4 +1,5 @@
 import { validationResult } from "express-validator";
+import blacklistToken from "../models/blacklistToke.model.js";
 import UserModel from "../models/user.model.js";
 import userService from "../services/user.service.js";
 
@@ -55,12 +56,36 @@ async function login(req, res) {
       });
     }
     const token = user.generateAuthToken();
+    res.cookie("token", token);
     res.status(200).json({ token, user });
   } catch (error) {}
+}
+
+async function getProfile(req, res) {
+  return res.status(200).json({
+    user: req.user,
+  });
+}
+
+async function logout(req, res) {
+  try {
+    const token = req.cookies.token || req.headers.Authorization?.split("")[1];
+    await blacklistToken.create({ token });
+    res.clearCookie("token");
+    res.status(200).json({
+      message: "Logged out",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error?.message,
+    });
+  }
 }
 
 const userController = {
   register,
   login,
+  logout,
+  getProfile,
 };
 export default userController;

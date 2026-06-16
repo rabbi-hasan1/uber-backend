@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import userController from "../controllers/user.controller.js";
+import checkAuth from "../middlewares/auth.middleware.js";
 const router = Router();
 router.post(
   "/register",
@@ -26,4 +27,8 @@ router.post(
   ],
   userController.login,
 );
+
+router.get("/logout", checkAuth, userController.logout);
+
+router.get("/getProfile", checkAuth, userController.getProfile);
 export default router;
