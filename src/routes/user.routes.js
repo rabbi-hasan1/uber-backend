@@ -2,8 +2,8 @@ import { Router } from "express";
 import { body } from "express-validator";
 import userController from "../controllers/user.controller.js";
 import checkAuth from "../middlewares/auth.middleware.js";
-const router = Router();
-router.post(
+const userRouter = Router();
+userRouter.post(
   "/register",
   [
     body("email").isEmail().withMessage("Invaild Email"),
@@ -17,7 +17,7 @@ router.post(
   userController.register,
 );
 
-router.post(
+userRouter.post(
   "/login",
   [
     body("email").isEmail().withMessage("Invalid email"),
@@ -28,7 +28,7 @@ router.post(
   userController.login,
 );
 
-router.get("/logout", checkAuth, userController.logout);
+userRouter.get("/logout", checkAuth, userController.logout);
 
-router.get("/getProfile", checkAuth, userController.getProfile);
-export default router;
+userRouter.get("/getProfile", checkAuth, userController.getProfile);
+export default userRouter;

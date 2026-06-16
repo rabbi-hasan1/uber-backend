@@ -2,7 +2,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import router from "./routes/user.routes.js";
+import userRouter from "./routes/user.routes.js";
+import captainRoutes from "./routes/captain.route.js";
 
 dotenv.config();
 const app = express();
@@ -13,5 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("hellow world");
 });
-app.use("/api/auth", router);
+app.use("/api/auth", userRouter);
+app.use("/api/captains", captainRoutes);
 export default app;
